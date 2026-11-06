@@ -138,7 +138,7 @@
         </div>
         <div class="flex items-center gap-2">
           <!-- Tasa BCV Pill -->
-          <button class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/70 text-amber-900 shadow-xs text-xs font-semibold active:scale-95 transition-transform hover:bg-amber-100/80" onclick="promptEditBcv()" type="button" title="Haz clic para actualizar la tasa BCV manualmente">
+          <button class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/70 text-amber-900 shadow-xs text-xs font-semibold active:scale-95 transition-transform hover:bg-amber-100/80 cursor-pointer" onclick="promptEditBcv()" type="button" title="Haz clic para actualizar la tasa BCV manualmente">
             <svg class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" viewBox="0 0 24 24">
               <circle cx="12" cy="12" fill="#fef3c7" r="9" stroke="currentColor" stroke-width="1.5"></circle>
               <path d="M12 7v10M9 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3m0 2.5h.01" stroke="#b45309" stroke-linecap="round" stroke-width="1.8"></path>
@@ -148,7 +148,7 @@
         </div>
       </div>
       
-      <!-- Ubicación -->
+      <!-- Ubicación y Modo -->
       <div class="flex items-center justify-between mt-2">
         <div class="flex items-center gap-1 text-[11px] text-slate-600 font-sans-alt font-medium">
           <span class="text-[#b3006b]">📍</span>
@@ -210,7 +210,7 @@
         </div>
       </section>
 
-      <!-- 3. Portafolio Exclusivo (Los 5 Servicios Reales) -->
+      <!-- 3. Portafolio Exclusivo (Los 5 Servicios Reales con lazy loading) -->
       <section class="space-y-3 pt-1">
         <div>
           <span class="text-[10px] font-bold text-[#b3006b] tracking-wider uppercase flex items-center gap-1">
@@ -219,12 +219,12 @@
           <h3 class="text-base font-extrabold text-slate-900 leading-tight">Trabajos Realizados &amp; Diseños Recientes</h3>
         </div>
 
-     <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-3">
           <!-- 1. Retiro -->
-          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5">
-            <div class="relative h-36 bg-slate-100">
-              <img src="retiro.jpg" alt="Retiro" class="w-full h-full object-cover"/>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold">Retiro</span>
+          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
+            <div class="relative h-36 bg-slate-100 overflow-hidden">
+              <img src="retiro.jpg" alt="Retiro" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Retiro</span>
             </div>
             <div class="px-2.5 space-y-0.5">
               <h4 class="text-xs font-bold text-slate-900 leading-tight">Remoción Segura</h4>
@@ -233,10 +233,10 @@
           </div>
 
           <!-- 2. Semipermanente -->
-          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5">
-            <div class="relative h-36 bg-slate-100">
-              <img src="semipermanentes.jpeg" alt="Semipermanente" class="w-full h-full object-cover"/>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold">Semipermanente</span>
+          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
+            <div class="relative h-36 bg-slate-100 overflow-hidden">
+              <img src="semipermanente.jpeg" alt="Semipermanente" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Semipermanente</span>
             </div>
             <div class="px-2.5 space-y-0.5">
               <h4 class="text-xs font-bold text-slate-900 leading-tight">Esmaltado en Gel</h4>
@@ -245,10 +245,10 @@
           </div>
 
           <!-- 3. Mantenimiento -->
-          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5">
-            <div class="relative h-36 bg-slate-100">
-              <img src="mantenimiento.jpeg" alt="Mantenimiento" class="w-full h-full object-cover"/>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold">Mantenimiento</span>
+          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
+            <div class="relative h-36 bg-slate-100 overflow-hidden">
+              <img src="mantenimiento.jpeg" alt="Mantenimiento" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Mantenimiento</span>
             </div>
             <div class="px-2.5 space-y-0.5">
               <h4 class="text-xs font-bold text-slate-900 leading-tight">Relleno &amp; Estética</h4>
@@ -257,10 +257,10 @@
           </div>
 
           <!-- 4. Nivelación -->
-          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5">
-            <div class="relative h-36 bg-slate-100">
-              <img src="nivelacion.jpeg" alt="Nivelación" class="w-full h-full object-cover"/>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold">Nivelación</span>
+          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
+            <div class="relative h-36 bg-slate-100 overflow-hidden">
+              <img src="nivelacion.jpeg" alt="Nivelación" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Nivelación</span>
             </div>
             <div class="px-2.5 space-y-0.5">
               <h4 class="text-xs font-bold text-slate-900 leading-tight">Rubber Base Glow</h4>
@@ -269,10 +269,10 @@
           </div>
 
           <!-- 5. Jelly Tips -->
-          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 col-span-2">
-            <div class="relative h-44 bg-slate-100">
-              <img src="jelly.jpeg" alt="Jelly Tips" class="w-full h-full object-cover"/>
-              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold">Jelly Tips</span>
+          <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 col-span-2 transition-transform hover:-translate-y-1 duration-200">
+            <div class="relative h-44 bg-slate-100 overflow-hidden">
+              <img src="jelly.jpeg" alt="Jelly Tips" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Jelly Tips</span>
             </div>
             <div class="px-3 space-y-0.5">
               <h4 class="text-xs font-bold text-slate-900 leading-tight">Extensiones en Gel</h4>
@@ -381,18 +381,18 @@
             <span class="text-[10px] bg-pink-100 text-[#b3006b] px-2 py-0.5 rounded-full font-bold">Domicilio +$2.50</span>
           </div>
           <div class="grid grid-cols-2 gap-2" id="modality-grid">
-            <button class="modality-btn py-3 px-3 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all font-bold text-xs" onclick="selectModality('Estudio Caucagua Viamar', 0.00, this)" type="button">
+            <button class="modality-btn py-3 px-3 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all font-bold text-xs cursor-pointer" onclick="selectModality('Estudio Caucagua Viamar', 0.00, this)" type="button">
               <span class="text-lg">🏠</span>
               <span>En Caucagua Viamar ($0.00)</span>
             </button>
-            <button class="modality-btn py-3 px-3 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 font-bold text-xs" onclick="selectModality('A Domicilio (+$2.50)', 2.50, this)" type="button">
+            <button class="modality-btn py-3 px-3 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 font-bold text-xs cursor-pointer" onclick="selectModality('A Domicilio (+$2.50)', 2.50, this)" type="button">
               <span class="text-lg">🚗</span>
               <span>A Domicilio (+$2.50)</span>
             </button>
           </div>
         </section>
 
-        <!-- 3. Calendario e Horarios Calculados dinámicamente -->
+        <!-- 3. Calendario & Horarios -->
         <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 border border-pink-100 shadow-xs space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-bold text-slate-900">3. Calendario &amp; Fecha</h3>
@@ -401,9 +401,9 @@
 
           <div class="bg-pink-50/50 p-3 rounded-2xl border border-pink-100 space-y-2">
             <div class="flex items-center justify-between text-xs font-bold text-slate-800 px-1">
-              <button class="p-1 rounded-lg bg-white border border-pink-200 text-[#b3006b] font-bold active:scale-95" onclick="navigateMonth(-1)" type="button">&lt;</button>
+              <button class="p-1.5 rounded-lg bg-white border border-pink-200 text-[#b3006b] font-bold active:scale-95 cursor-pointer hover:bg-pink-50" onclick="navigateMonth(-1)" type="button">&lt;</button>
               <span class="font-bold text-sm text-[#b3006b]" id="calendar-month-year-title">Octubre 2026</span>
-              <button class="p-1 rounded-lg bg-white border border-pink-200 text-[#b3006b] font-bold active:scale-95" onclick="navigateMonth(1)" type="button">&gt;</button>
+              <button class="p-1.5 rounded-lg bg-white border border-pink-200 text-[#b3006b] font-bold active:scale-95 cursor-pointer hover:bg-pink-50" onclick="navigateMonth(1)" type="button">&gt;</button>
             </div>
             <div class="grid grid-cols-7 gap-1 text-center font-bold text-[10px] text-slate-400 py-1">
               <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
@@ -417,7 +417,7 @@
               <span class="text-[10px] font-bold text-[#b3006b]" id="service-duration-badge">Duración: 90 min</span>
             </div>
             <div class="grid grid-cols-3 gap-2" id="time-slots-container">
-              <!-- Se calculan dinámicamente según la duración del servicio -->
+              <!-- Se calculan dinámicamente -->
             </div>
           </div>
         </section>
@@ -428,16 +428,16 @@
           <div class="grid grid-cols-2 gap-2 font-sans-alt">
             <div>
               <label class="block text-[11px] font-bold text-slate-600 mb-1" for="inp-nombre">Nombre *</label>
-              <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b]" id="inp-nombre" type="text" value="Valeria">
+              <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors" id="inp-nombre" type="text" value="Valeria">
             </div>
             <div>
               <label class="block text-[11px] font-bold text-slate-600 mb-1" for="inp-apellido">Apellido *</label>
-              <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b]" id="inp-apellido" type="text" value="Morales">
+              <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors" id="inp-apellido" type="text" value="Morales">
             </div>
           </div>
           <div class="font-sans-alt">
             <label class="block text-[11px] font-bold text-slate-600 mb-1" for="inp-phone">Teléfono / WhatsApp *</label>
-            <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b]" id="inp-phone" placeholder="Ej: 04121234567" type="tel" value="04128765432">
+            <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors" id="inp-phone" placeholder="Ej: 04121234567" type="tel" value="04128765432">
           </div>
         </section>
 
@@ -448,17 +448,17 @@
             <span class="text-[10px] bg-pink-100 text-[#b3006b] px-2 py-0.5 rounded-full font-bold">Selección requerida</span>
           </div>
           <div class="grid grid-cols-3 gap-2" id="payment-methods-grid">
-            <button class="payment-btn py-2.5 px-2 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all" onclick="selectPaymentMethod('Dólares (Efectivo)', this)" type="button">
+            <button class="payment-btn py-2.5 px-2 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer font-bold" onclick="selectPaymentMethod('Dólares (Efectivo)', this)" type="button">
               <span class="text-base">💵</span>
-              <span class="text-[11px] font-bold">Dólares</span>
+              <span class="text-[11px]">Dólares</span>
             </button>
-            <button class="payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50" onclick="selectPaymentMethod('Pago Móvil', this)" type="button">
+            <button class="payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 cursor-pointer font-bold" onclick="selectPaymentMethod('Pago Móvil', this)" type="button">
               <span class="text-base">📱</span>
-              <span class="text-[11px] font-bold">Pago Móvil</span>
+              <span class="text-[11px]">Pago Móvil</span>
             </button>
-            <button class="payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50" onclick="selectPaymentMethod('USDT (Binance)', this)" type="button">
+            <button class="payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 cursor-pointer font-bold" onclick="selectPaymentMethod('USDT (Binance)', this)" type="button">
               <span class="text-base">🪙</span>
-              <span class="text-[11px] font-bold">USDT</span>
+              <span class="text-[11px]">USDT</span>
             </button>
           </div>
         </section>
@@ -494,30 +494,50 @@
           </div>
         </section>
 
-        <button class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#b3006b] via-pink-600 to-[#db1b86] text-white font-bold text-sm shadow-md active:scale-[0.96] transition-all flex items-center justify-center gap-2 cursor-pointer" onclick="confirmAppointment()" type="button">
+        <button class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#b3006b] via-pink-600 to-[#db1b86] text-white font-bold text-sm shadow-md active:scale-[0.96] transition-all flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" onclick="confirmAppointment()" type="button">
           <span>Confirmar Cita 💅</span>
         </button>
       </main>
     </div>
 
-    <!-- ================= PESTAÑA 3: MIS CITAS ================= -->
+    <!-- ================= PESTAÑA 3: MIS CITAS (Con Login Visual Integrado) ================= -->
     <div id="tab-citas" class="tab-content hidden w-full px-4 pt-3.5 space-y-4 font-sans-alt">
-      <main class="w-full flex flex-col gap-4">
-        
+      
+      <!-- Pantalla de Login (Se oculta al autenticarse) -->
+      <div id="admin-login-screen" class="w-full bg-white rounded-3xl p-6 border border-pink-100 shadow-sm space-y-4 text-center mt-6">
+        <div class="w-14 h-14 bg-pink-50 text-[#b3006b] rounded-2xl mx-auto flex items-center justify-center shadow-xs">
+          <span class="material-symbols-outlined text-[28px]">lock</span>
+        </div>
+        <div class="space-y-1">
+          <h2 class="text-lg font-extrabold text-slate-900">Panel de Administración</h2>
+          <p class="text-xs text-slate-500">Ingresa tu clave de acceso para gestionar las citas y la agenda del estudio.</p>
+        </div>
+        <div class="space-y-3 pt-2">
+          <div>
+            <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-4 py-3 text-sm text-center text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors tracking-widest font-bold" id="admin-pin-input" placeholder="••••••••" type="password">
+          </div>
+          <button class="w-full py-3 px-6 rounded-xl bg-[#b3006b] text-white font-bold text-sm shadow-md active:scale-95 transition-all cursor-pointer hover:bg-[#99005a]" onclick="handleAdminLogin()" type="button">
+            Iniciar Sesión 🔓
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenido Protegido del Panel Admin (Oculto por defecto hasta hacer login) -->
+      <main class="w-full flex-col gap-4 hidden" id="admin-panel-content">
         <div class="bg-white border border-pink-100 rounded-2xl p-3.5 shadow-xs space-y-3">
           <div class="flex items-center justify-between">
             <div>
               <h1 class="font-headline-md text-base font-bold text-slate-900 leading-tight">Panel Administrador 🔒</h1>
               <p class="text-xs text-slate-500 font-sans-alt">Gestión en tiempo real de citas</p>
             </div>
-            <span class="px-2.5 py-1 rounded-full bg-pink-100 border text-[#b3006b] text-xs font-bold" id="counter-badge-text">0 Pendientes</span>
+            <span class="px-2.5 py-1 rounded-full bg-pink-100 text-[#b3006b] text-xs font-bold" id="counter-badge-text">0 Pendientes</span>
           </div>
 
           <div class="pt-2 border-t border-pink-100 grid grid-cols-2 gap-2">
-            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform" onclick="promptBlockSchedule()" type="button">
+            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptBlockSchedule()" type="button">
               Bloquear Horario
             </button>
-            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform" onclick="promptEditBcv()" type="button">
+            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptEditBcv()" type="button">
               Ajustar Tasa BCV
             </button>
           </div>
@@ -530,15 +550,15 @@
     <!-- Navegación Inferior -->
     <nav class="fixed bottom-0 inset-x-0 z-40 pb-safe bg-white/95 backdrop-blur-xl border-t border-pink-100 shadow-lg">
       <div class="grid grid-cols-3 items-center h-16 px-4 max-w-md mx-auto w-full" id="bottom-navbar">
-        <button class="nav-tab-btn flex flex-col items-center justify-center gap-1 min-h-[44px] text-primary transition-colors active:scale-95" id="nav-btn-inicio" onclick="switchTab('inicio')" type="button">
+        <button class="nav-tab-btn flex flex-col items-center justify-center gap-1 min-h-[44px] text-primary transition-colors active:scale-95 cursor-pointer" id="nav-btn-inicio" onclick="switchTab('inicio')" type="button">
           <span class="material-symbols-outlined text-[22px]">home</span>
           <span class="text-[11px] font-bold text-primary leading-none nav-text font-sans-alt">Inicio</span>
         </button>
-        <button class="nav-tab-btn flex flex-col items-center justify-center gap-0.5 min-h-[44px] text-on-surface-variant hover:text-primary transition-colors active:scale-95" id="nav-btn-agendar" onclick="switchTab('agenda')" type="button">
+        <button class="nav-tab-btn flex flex-col items-center justify-center gap-0.5 min-h-[44px] text-on-surface-variant hover:text-primary transition-colors active:scale-95 cursor-pointer" id="nav-btn-agendar" onclick="switchTab('agenda')" type="button">
           <span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
           <span class="text-[11px] font-medium leading-none nav-text font-sans-alt">Agendar</span>
         </button>
-        <button class="nav-tab-btn flex flex-col items-center justify-center gap-1 min-h-[44px] text-on-surface-variant hover:text-primary transition-colors active:scale-95" id="nav-btn-citas" onclick="switchTab('citas')" type="button">
+        <button class="nav-tab-btn flex flex-col items-center justify-center gap-1 min-h-[44px] text-on-surface-variant hover:text-primary transition-colors active:scale-95 cursor-pointer" id="nav-btn-citas" onclick="switchTab('citas')" type="button">
           <span class="material-symbols-outlined text-[22px]">lock</span>
           <span class="text-[11px] font-medium leading-none nav-text font-sans-alt">Mis Citas</span>
         </button>
@@ -547,7 +567,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON SUPABASE Y TIEMPO REAL -->
+  <!-- JAVASCRIPT CON SUPABASE Y LOGIN VISUAL INTEGRADO -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -556,7 +576,7 @@
     const SUPABASE_KEY = "sb_publishable_XR2hC2rItoyRhGuD6DMvQQ_vmgx1_2v";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let NUMERO_ESTUDIO = "584126284665"; 
+    let NUMERO_ESTUDIO = "584127335975"; 
     let TASA_BCV = 887.30;              
     let ADMIN_PIN = "Lasy27**";         // Clave de Administrador
     let isAdminAuthenticated = false;
@@ -655,18 +675,8 @@
       }
     }
 
+    // LÓGICA DE PESTAÑAS Y CONTROL DE ACCESO CON LOGIN VISUAL
     function switchTab(tabId) {
-      if (tabId === 'citas' && !isAdminAuthenticated) {
-        const inputPass = prompt("🔐 Pestaña Restringida. Ingresa la clave de Administrador/Dueña:");
-        if (inputPass === ADMIN_PIN) {
-          isAdminAuthenticated = true;
-          showMiniNotification("¡Acceso concedido como Administradora!");
-        } else {
-          showMiniNotification("Clave incorrecta. Acceso denegado.");
-          return;
-        }
-      }
-
       document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.add('hidden');
         tab.classList.remove('block');
@@ -676,6 +686,27 @@
       if (selectedTab) {
         selectedTab.classList.remove('hidden');
         selectedTab.classList.add('block');
+      }
+
+      // Gestionar visibilidad del login visual en la pestaña "citas"
+      if (tabId === 'citas') {
+        const loginScreen = document.getElementById('admin-login-screen');
+        const adminPanel = document.getElementById('admin-panel-content');
+
+        if (isAdminAuthenticated) {
+          if (loginScreen) loginScreen.classList.add('hidden');
+          if (adminPanel) {
+            adminPanel.classList.remove('hidden');
+            adminPanel.classList.add('flex');
+          }
+          renderAppointmentsList();
+        } else {
+          if (loginScreen) loginScreen.classList.remove('hidden');
+          if (adminPanel) {
+            adminPanel.classList.add('hidden');
+            adminPanel.classList.remove('flex');
+          }
+        }
       }
 
       document.querySelectorAll('.nav-tab-btn').forEach(btn => {
@@ -697,10 +728,25 @@
       if (subtitle) {
         if (tabId === 'inicio') subtitle.innerText = 'INICIO & PORTAFOLIO';
         if (tabId === 'agenda') subtitle.innerText = 'AGENDAR CITA';
-        if (tabId === 'citas') subtitle.innerText = 'PANEL ADMINISTRADOR';
+        if (tabId === 'citas') subtitle.innerText = isAdminAuthenticated ? 'PANEL ADMINISTRADOR' : 'ACCESO ADMIN';
       }
+    }
 
-      if (tabId === 'citas') renderAppointmentsList();
+    // VALIDACIÓN DEL LOGIN VISUAL
+    function handleAdminLogin() {
+      const pinInput = document.getElementById('admin-pin-input');
+      if (!pinInput) return;
+
+      if (pinInput.value === ADMIN_PIN) {
+        isAdminAuthenticated = true;
+        showMiniNotification("¡Acceso concedido como Administradora!");
+        pinInput.value = ""; // Limpiar campo
+        switchTab('citas'); // Refrescar vista para mostrar el panel
+      } else {
+        showMiniNotification("Clave incorrecta. Inténtalo de nuevo.");
+        pinInput.classList.add('border-rose-500');
+        setTimeout(() => pinInput.classList.remove('border-rose-500'), 1500);
+      }
     }
 
     function selectService(name, price, durationMin, elementId) {
@@ -716,16 +762,14 @@
     function selectModality(modalityName, fee, btn) {
       selectedModality = modalityName;
       modalityFee = fee;
-      document.querySelectorAll(".modality-btn").forEach(b => b.className = "modality-btn py-3 px-3 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 font-bold text-xs");
-      btn.className = "modality-btn py-3 px-3 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all font-bold text-xs";
+      document.querySelectorAll(".modality-btn").forEach(b => b.className = "modality-btn py-3 px-3 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 font-bold text-xs cursor-pointer");
+      btn.className = "modality-btn py-3 px-3 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all font-bold text-xs cursor-pointer";
       const tag = document.getElementById("summary-modality-tag");
       if (tag) tag.textContent = modalityName;
       updateSummary();
     }
 
-    // ==========================================
     // LÓGICA DE TIEMPO Y CÁLCULO DE TURNOS DINÁMICOS
-    // ==========================================
     function calculateAvailableTimeSlots() {
       const container = document.getElementById("time-slots-container");
       const badge = document.getElementById("service-duration-badge");
@@ -734,11 +778,10 @@
       container.innerHTML = "";
       if (badge) badge.textContent = `Duración: ${currentService.durationMin} min`;
 
-      const workStart = 480; // 8:00 AM en minutos
-      const workEnd = 1080;  // 6:00 PM en minutos
+      const workStart = 480; // 8:00 AM
+      const workEnd = 1080;  // 6:00 PM
       const step = 30;
 
-      // BLOQUEAR HORARIOS: Si está pendiente, confirmada, RECHAZADA o bloqueado
       const existingOnDay = appointmentsDatabase.filter(a => a.raw_date_str === selectedDate && (a.status === 'pendiente' || a.status === 'confirmada' || a.status === 'rechazada' || a.status === 'bloqueado'));
       let availableSlots = [];
 
@@ -773,8 +816,8 @@
         if (isSelected) selectedTime = slot.timeLabel;
 
         const btnClass = isSelected
-          ? "time-slot-btn py-2 px-1 rounded-xl bg-[#b3006b] text-white flex flex-col items-center justify-center font-bold text-xs shadow-md"
-          : "time-slot-btn py-2 px-1 rounded-xl border border-pink-200 bg-pink-50/50 text-[#b3006b] flex flex-col items-center justify-center font-bold text-xs";
+          ? "time-slot-btn py-2 px-1 rounded-xl bg-[#b3006b] text-white flex flex-col items-center justify-center font-bold text-xs shadow-md cursor-pointer"
+          : "time-slot-btn py-2 px-1 rounded-xl border border-pink-200 bg-pink-50/50 text-[#b3006b] flex flex-col items-center justify-center font-bold text-xs cursor-pointer hover:bg-pink-100";
 
         container.innerHTML += `
           <button class="${btnClass}" onclick="selectTimeSlot(this, '${slot.timeLabel}')" type="button">
@@ -810,8 +853,8 @@
 
     function selectTimeSlot(btn, timeStr) {
       selectedTime = timeStr;
-      document.querySelectorAll(".time-slot-btn").forEach(slot => slot.className = "time-slot-btn py-2 px-1 rounded-xl border border-pink-200 bg-pink-50/50 text-[#b3006b] flex flex-col items-center justify-center font-bold text-xs");
-      btn.className = "time-slot-btn py-2 px-1 rounded-xl bg-[#b3006b] text-white flex flex-col items-center justify-center font-bold text-xs shadow-md";
+      document.querySelectorAll(".time-slot-btn").forEach(slot => slot.className = "time-slot-btn py-2 px-1 rounded-xl border border-pink-200 bg-pink-50/50 text-[#b3006b] flex flex-col items-center justify-center font-bold text-xs cursor-pointer hover:bg-pink-100");
+      btn.className = "time-slot-btn py-2 px-1 rounded-xl bg-[#b3006b] text-white flex flex-col items-center justify-center font-bold text-xs shadow-md cursor-pointer";
     }
 
     function renderCalendar() {
@@ -834,8 +877,8 @@
       for (let day = 1; day <= totalDays; day++) {
         const isSelected = (day === selectedDayNum);
         const btnClass = isSelected 
-          ? "cal-day-btn p-1.5 rounded-lg bg-[#b3006b] text-white font-bold"
-          : "cal-day-btn p-1.5 rounded-lg hover:bg-pink-100 text-slate-700 font-semibold";
+          ? "cal-day-btn p-1.5 rounded-lg bg-[#b3006b] text-white font-bold cursor-pointer"
+          : "cal-day-btn p-1.5 rounded-lg hover:bg-pink-100 text-slate-700 font-semibold cursor-pointer";
         grid.innerHTML += `<button class="${btnClass}" onclick="clickCalendarDay(${day})" type="button">${day}</button>`;
       }
     }
@@ -869,8 +912,8 @@
 
     function selectPaymentMethod(methodName, btn) {
       selectedPayment = methodName;
-      document.querySelectorAll(".payment-btn").forEach(b => b.className = "payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50");
-      btn.className = "payment-btn py-2.5 px-2 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all";
+      document.querySelectorAll(".payment-btn").forEach(b => b.className = "payment-btn py-2.5 px-2 rounded-xl border border-pink-200 bg-white text-slate-700 flex flex-col items-center justify-center gap-1 active:scale-95 transition-all hover:bg-pink-50 cursor-pointer font-bold");
+      btn.className = "payment-btn py-2.5 px-2 rounded-xl border-2 border-[#b3006b] bg-pink-50/80 text-[#b3006b] flex flex-col items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer font-bold";
       const tag = document.getElementById("summary-payment-tag");
       if (tag) tag.textContent = methodName;
     }
@@ -975,20 +1018,20 @@
             <div class="flex flex-col gap-2 pt-1">
               ${apt.status === 'pendiente' ? `
                 <div class="grid grid-cols-2 gap-2">
-                  <button class="py-2 px-3 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform" onclick="updateAppointmentStatus('${apt.id}', 'confirmada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
+                  <button class="py-2 px-3 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer hover:bg-emerald-700" onclick="updateAppointmentStatus('${apt.id}', 'confirmada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
                     Aceptar ✅
                   </button>
-                  <button class="py-2 px-3 rounded-xl bg-rose-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform" onclick="updateAppointmentStatus('${apt.id}', 'rechazada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
+                  <button class="py-2 px-3 rounded-xl bg-rose-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer hover:bg-rose-700" onclick="updateAppointmentStatus('${apt.id}', 'rechazada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
                     Rechazar ❌
                   </button>
                 </div>
               ` : ''}
               ${apt.status === 'confirmada' ? `
-                <button class="py-2 px-3 rounded-xl bg-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform" onclick="updateAppointmentStatus('${apt.id}', 'completada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
+                <button class="py-2 px-3 rounded-xl bg-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer hover:bg-indigo-700" onclick="updateAppointmentStatus('${apt.id}', 'completada', '${apt.phone}', '${apt.cliente}', '${apt.date}', '${apt.service}')">
                   Marcar Completada ✅
                 </button>
               ` : ''}
-              <button class="py-2 px-3 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold active:scale-95 transition-transform" onclick="deleteAppointment('${apt.id}')">
+              <button class="py-2 px-3 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold active:scale-95 transition-transform cursor-pointer hover:bg-slate-200" onclick="deleteAppointment('${apt.id}')">
                 Eliminar Registro / Liberar Horario
               </button>
             </div>
@@ -1008,7 +1051,6 @@
       if (!error) {
         showMiniNotification(`Cita actualizada a: ${newStatus}`);
 
-        // Redirigir a WhatsApp con mensaje para la clienta
         let msg = "";
         if (newStatus === 'confirmada') {
           msg = `¡Hola ${cliente}! ✨ Tu cita para *${service}* el día *${date}* en Carolina's Studio ha sido *CONFIRMADA*. ¡Te esperamos! 💅`;
@@ -1048,7 +1090,7 @@
       }
     }
 
-    // 6. BLOQUEO MANUAL DE CUALQUIER HORARIO (Incluso no seguidos)
+    // 6. BLOQUEO MANUAL DE HORARIO
     async function promptBlockSchedule() {
       const horaInicio = prompt("Ingresa la hora de inicio a bloquear (Ej: 02:30 PM):", "02:30 PM");
       if (!horaInicio) return;
