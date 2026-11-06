@@ -92,17 +92,58 @@
   </script>
   <style>
     html, body {
-      background-color: #fff7fb;
+      background-color: var(--bg-main, #fff7fb);
+      color: var(--text-main, #1e293b);
       min-height: 100vh;
       margin: 0;
       padding: 0;
       font-family: 'Epilogue', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
     .font-sans-alt {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .pb-safe {
       padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+    }
+
+    /* ESTILOS MODO OSCURO SUTIL */
+    body.dark-mode {
+      --bg-main: #120d14;
+      --text-main: #f3e8f6;
+      background-color: #120d14 !important;
+      color: #f3e8f6 !important;
+    }
+    body.dark-mode .bg-white,
+    body.dark-mode .bg-white\/95,
+    body.dark-mode .bg-white\/50 {
+      background-color: #1a121d !important;
+      color: #f3e8f6 !important;
+      border-color: #3b253b !important;
+    }
+    body.dark-mode .text-slate-900,
+    body.dark-mode .text-slate-800,
+    body.dark-mode .text-slate-700 {
+      color: #f3e8f6 !important;
+    }
+    body.dark-mode .text-slate-500,
+    body.dark-mode .text-slate-600 {
+      color: #c9b4cc !important;
+    }
+    body.dark-mode input,
+    body.dark-mode select {
+      background-color: #241828 !important;
+      color: #ffffff !important;
+      border-color: #4a2e4b !important;
+    }
+    body.dark-mode header,
+    body.dark-mode nav {
+      background-color: rgba(26, 18, 29, 0.95) !important;
+      border-color: #3b253b !important;
+    }
+    body.dark-mode .bg-pink-50 {
+      background-color: #2a1628 !important;
+      border-color: #4a2e4b !important;
     }
   </style>
 </head>
@@ -127,16 +168,21 @@
   </div>
 
   <!-- Contenedor App Móvil -->
-  <div class="w-full max-w-md mx-auto min-h-screen relative pb-24 flex flex-col bg-[#fff7fb]">
+  <div class="w-full max-w-md mx-auto min-h-screen relative pb-24 flex flex-col">
 
     <!-- Header Fijo Superior -->
-    <header class="sticky top-0 z-40 bg-[#fff7fb]/95 backdrop-blur-md border-b border-pink-100/90 px-4 pt-3 pb-2.5 shadow-xs w-full">
+    <header class="sticky top-0 z-40 backdrop-blur-md border-b border-pink-100/90 px-4 pt-3 pb-2.5 shadow-xs w-full transition-colors">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-xl font-extrabold tracking-tight text-[#b3006b] leading-tight cursor-pointer active:scale-95 transition-transform" onclick="showMiniNotification('Carolina\'s Studio')">Carolina's</h1>
           <p class="text-[10px] font-bold text-[#b3006b]/80 tracking-wider uppercase font-sans-alt" id="header-subtitle">INICIO &amp; PORTAFOLIO</p>
         </div>
         <div class="flex items-center gap-2">
+          <!-- Botón Modo Oscuro Sutil -->
+          <button class="p-2 rounded-full bg-pink-100/70 dark:bg-pink-900/40 text-[#b3006b] hover:bg-pink-200 active:scale-95 transition-all cursor-pointer" onclick="toggleDarkMode()" type="button" title="Cambiar Modo Oscuro / Claro">
+            <span class="material-symbols-outlined text-[18px]" id="dark-mode-icon">dark_mode</span>
+          </button>
+
           <!-- Tasa BCV Pill -->
           <button class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/70 text-amber-900 shadow-xs text-xs font-semibold active:scale-95 transition-transform hover:bg-amber-100/80 cursor-pointer" onclick="promptEditBcv()" type="button" title="Haz clic para actualizar la tasa BCV manualmente">
             <svg class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" viewBox="0 0 24 24">
@@ -422,7 +468,7 @@
           </div>
         </section>
 
-        <!-- 4. Tus Datos -->
+        <!-- 4. Tus Datos (Con Formato Automático de Teléfono) -->
         <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 border border-pink-100 shadow-xs space-y-3">
           <h3 class="text-sm font-bold text-slate-900">4. Datos del Cliente</h3>
           <div class="grid grid-cols-2 gap-2 font-sans-alt">
@@ -437,7 +483,8 @@
           </div>
           <div class="font-sans-alt">
             <label class="block text-[11px] font-bold text-slate-600 mb-1" for="inp-phone">Teléfono / WhatsApp *</label>
-            <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors" id="inp-phone" placeholder="Ej: 04121234567" type="tel" value="04128765432">
+            <input class="w-full bg-slate-50 border border-pink-200/80 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#b3006b] transition-colors" id="inp-phone" placeholder="Ej: 0412-1234567" type="tel" maxlength="12" oninput="formatPhoneNumber(this)" value="0412-8765432">
+            <span class="text-[10px] text-slate-400 mt-0.5 block">Formato automático (Ej: 0412-1234567)</span>
           </div>
         </section>
 
@@ -494,16 +541,17 @@
           </div>
         </section>
 
-        <button class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#b3006b] via-pink-600 to-[#db1b86] text-white font-bold text-sm shadow-md active:scale-[0.96] transition-all flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" onclick="confirmAppointment()" type="button">
-          <span>Confirmar Cita 💅</span>
+        <!-- Botón de Confirmación con Estado de Carga -->
+        <button id="btn-confirmar-cita" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#b3006b] via-pink-600 to-[#db1b86] text-white font-bold text-sm shadow-md active:scale-[0.96] transition-all flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" onclick="confirmAppointment()" type="button">
+          <span id="btn-confirmar-text">Confirmar Cita 💅</span>
         </button>
       </main>
     </div>
 
-    <!-- ================= PESTAÑA 3: MIS CITAS (Con Login Visual Integrado) ================= -->
+    <!-- ================= PESTAÑA 3: MIS CITAS (Con KPIs, Filtros, Login y Modo Oscuro) ================= -->
     <div id="tab-citas" class="tab-content hidden w-full px-4 pt-3.5 space-y-4 font-sans-alt">
       
-      <!-- Pantalla de Login (Se oculta al autenticarse) -->
+      <!-- Pantalla de Login Visual -->
       <div id="admin-login-screen" class="w-full bg-white rounded-3xl p-6 border border-pink-100 shadow-sm space-y-4 text-center mt-6">
         <div class="w-14 h-14 bg-pink-50 text-[#b3006b] rounded-2xl mx-auto flex items-center justify-center shadow-xs">
           <span class="material-symbols-outlined text-[28px]">lock</span>
@@ -522,15 +570,47 @@
         </div>
       </div>
 
-      <!-- Contenido Protegido del Panel Admin (Oculto por defecto hasta hacer login) -->
+      <!-- Contenido Protegido del Panel Admin -->
       <main class="w-full flex-col gap-4 hidden" id="admin-panel-content">
+        
+        <!-- Botón de Cerrar Sesión Admin -->
+        <div class="flex justify-end">
+          <button onclick="handleAdminLogout()" class="text-xs font-bold text-rose-600 hover:text-rose-800 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-[14px]">logout</span> Cerrar Sesión Admin
+          </button>
+        </div>
+
+        <!-- 1. Tarjetas de Indicadores Rápidos (KPIs) -->
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-white border border-pink-100 rounded-2xl p-3 text-center shadow-xs">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Pendientes</span>
+            <span class="text-lg font-extrabold text-[#b3006b]" id="kpi-pendientes">0</span>
+          </div>
+          <div class="bg-white border border-pink-100 rounded-2xl p-3 text-center shadow-xs">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Ingresos Est.</span>
+            <span class="text-base font-extrabold text-emerald-600" id="kpi-ingresos">$0.00</span>
+          </div>
+          <div class="bg-white border border-pink-100 rounded-2xl p-3 text-center shadow-xs">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tasa BCV</span>
+            <span class="text-xs font-extrabold text-amber-700" id="kpi-bcv">-- Bs</span>
+          </div>
+        </div>
+
+        <!-- Panel de Acciones y Filtros Rápidos -->
         <div class="bg-white border border-pink-100 rounded-2xl p-3.5 shadow-xs space-y-3">
           <div class="flex items-center justify-between">
             <div>
               <h1 class="font-headline-md text-base font-bold text-slate-900 leading-tight">Panel Administrador 🔒</h1>
-              <p class="text-xs text-slate-500 font-sans-alt">Gestión en tiempo real de citas</p>
+              <p class="text-xs text-slate-500 font-sans-alt">Gestión en tiempo real</p>
             </div>
-            <span class="px-2.5 py-1 rounded-full bg-pink-100 text-[#b3006b] text-xs font-bold" id="counter-badge-text">0 Pendientes</span>
+          </div>
+
+          <!-- Botones de Filtro Rápido -->
+          <div class="flex items-center gap-1 overflow-x-auto pt-1 pb-1" id="filter-buttons-container">
+            <button onclick="setAppointmentsFilter('todas', this)" class="filter-btn px-3 py-1 rounded-full text-xs font-bold bg-[#b3006b] text-white shrink-0 cursor-pointer">Todas</button>
+            <button onclick="setAppointmentsFilter('pendiente', this)" class="filter-btn px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-slate-600 border border-pink-200 shrink-0 cursor-pointer">Pendientes</button>
+            <button onclick="setAppointmentsFilter('confirmada', this)" class="filter-btn px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-slate-600 border border-pink-200 shrink-0 cursor-pointer">Confirmadas</button>
+            <button onclick="setAppointmentsFilter('completada', this)" class="filter-btn px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-slate-600 border border-pink-200 shrink-0 cursor-pointer">Completadas</button>
           </div>
 
           <div class="pt-2 border-t border-pink-100 grid grid-cols-2 gap-2">
@@ -548,7 +628,7 @@
     </div>
 
     <!-- Navegación Inferior -->
-    <nav class="fixed bottom-0 inset-x-0 z-40 pb-safe bg-white/95 backdrop-blur-xl border-t border-pink-100 shadow-lg">
+    <nav class="fixed bottom-0 inset-x-0 z-40 pb-safe bg-white/95 backdrop-blur-xl border-t border-pink-100 shadow-lg transition-colors">
       <div class="grid grid-cols-3 items-center h-16 px-4 max-w-md mx-auto w-full" id="bottom-navbar">
         <button class="nav-tab-btn flex flex-col items-center justify-center gap-1 min-h-[44px] text-primary transition-colors active:scale-95 cursor-pointer" id="nav-btn-inicio" onclick="switchTab('inicio')" type="button">
           <span class="material-symbols-outlined text-[22px]">home</span>
@@ -567,7 +647,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON SUPABASE Y LOGIN VISUAL INTEGRADO -->
+  <!-- JAVASCRIPT CON TODAS LAS MEJORAS UX IMPLEMENTADAS -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -576,10 +656,12 @@
     const SUPABASE_KEY = "sb_publishable_XR2hC2rItoyRhGuD6DMvQQ_vmgx1_2v";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let NUMERO_ESTUDIO = "584127335975"; 
+    let NUMERO_ESTUDIO = "584126284665"; 
     let TASA_BCV = 887.30;              
     let ADMIN_PIN = "Lasy27**";         // Clave de Administrador
-    let isAdminAuthenticated = false;
+    
+    // PERSISTENCIA DE SESIÓN
+    let isAdminAuthenticated = localStorage.getItem("carolinas_admin_auth") === "true";
 
     let toastTimer = null;
     let currentService = { name: "Nivelación", price: 13.00, durationMin: 90, id: "service-nivelacion" };
@@ -587,6 +669,7 @@
     let modalityFee = 0.00;
     let selectedTime = "";
     let selectedPayment = "Dólares (Efectivo)";
+    let currentFilterStatus = "todas";
 
     const monthYears = [
       { month: 9, year: 2026, name: "Octubre 2026" },
@@ -599,6 +682,39 @@
     let selectedDate = "15 de Oct, 2026";
 
     let appointmentsDatabase = [];
+
+    // MODO OSCURO: Inicializar preferencia guardada
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("carolinas_dark_mode") === "true") {
+        document.body.classList.add("dark-mode");
+        const icon = document.getElementById("dark-mode-icon");
+        if(icon) icon.textContent = "light_mode";
+      }
+
+      obtenerTasaBCV();
+      switchTab('inicio');
+      renderCalendar();
+      fetchAppointmentsFromSupabase();
+      subscribeToRealtime();
+    });
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("carolinas_dark_mode", isDark);
+      const icon = document.getElementById("dark-mode-icon");
+      if(icon) icon.textContent = isDark ? "light_mode" : "dark_mode";
+      showMiniNotification(isDark ? "Modo Oscuro activado 🌙" : "Modo Claro activado ☀️");
+    }
+
+    // FORMATO AUTOMÁTICO DE TELÉFONO (Ej: 0412-1234567)
+    function formatPhoneNumber(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 4) {
+        value = value.slice(0, 4) + '-' + value.slice(4, 11);
+      }
+      input.value = value;
+    }
 
     async function obtenerTasaBCV() {
       try {
@@ -614,18 +730,10 @@
         const tag = document.getElementById("global-bcv-tag");
         if (tag) tag.textContent = `${TASA_BCV.toFixed(2)} Bs`;
         updateSummary();
+        if (isAdminAuthenticated) updateAdminKPIs();
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      obtenerTasaBCV();
-      switchTab('inicio');
-      renderCalendar();
-      fetchAppointmentsFromSupabase();
-      subscribeToRealtime();
-    });
-
-    // 1. CARGAR CITAS DESDE SUPABASE
     async function fetchAppointmentsFromSupabase() {
       const { data, error } = await _supabase
         .from('citas')
@@ -635,11 +743,13 @@
       if (!error && data) {
         appointmentsDatabase = data;
         calculateAvailableTimeSlots();
-        if (isAdminAuthenticated) renderAppointmentsList();
+        if (isAdminAuthenticated) {
+          renderAppointmentsList();
+          updateAdminKPIs();
+        }
       }
     }
 
-    // 2. ESCUCHAR CAMBIOS EN TIEMPO REAL
     function subscribeToRealtime() {
       _supabase
         .channel('public:citas')
@@ -675,7 +785,6 @@
       }
     }
 
-    // LÓGICA DE PESTAÑAS Y CONTROL DE ACCESO CON LOGIN VISUAL
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.add('hidden');
@@ -688,7 +797,6 @@
         selectedTab.classList.add('block');
       }
 
-      // Gestionar visibilidad del login visual en la pestaña "citas"
       if (tabId === 'citas') {
         const loginScreen = document.getElementById('admin-login-screen');
         const adminPanel = document.getElementById('admin-panel-content');
@@ -700,6 +808,7 @@
             adminPanel.classList.add('flex');
           }
           renderAppointmentsList();
+          updateAdminKPIs();
         } else {
           if (loginScreen) loginScreen.classList.remove('hidden');
           if (adminPanel) {
@@ -732,21 +841,28 @@
       }
     }
 
-    // VALIDACIÓN DEL LOGIN VISUAL
     function handleAdminLogin() {
       const pinInput = document.getElementById('admin-pin-input');
       if (!pinInput) return;
 
       if (pinInput.value === ADMIN_PIN) {
         isAdminAuthenticated = true;
+        localStorage.setItem("carolinas_admin_auth", "true");
         showMiniNotification("¡Acceso concedido como Administradora!");
-        pinInput.value = ""; // Limpiar campo
-        switchTab('citas'); // Refrescar vista para mostrar el panel
+        pinInput.value = "";
+        switchTab('citas');
       } else {
         showMiniNotification("Clave incorrecta. Inténtalo de nuevo.");
         pinInput.classList.add('border-rose-500');
         setTimeout(() => pinInput.classList.remove('border-rose-500'), 1500);
       }
+    }
+
+    function handleAdminLogout() {
+      isAdminAuthenticated = false;
+      localStorage.removeItem("carolinas_admin_auth");
+      showMiniNotification("Sesión de administración cerrada.");
+      switchTab('citas');
     }
 
     function selectService(name, price, durationMin, elementId) {
@@ -769,7 +885,6 @@
       updateSummary();
     }
 
-    // LÓGICA DE TIEMPO Y CÁLCULO DE TURNOS DINÁMICOS
     function calculateAvailableTimeSlots() {
       const container = document.getElementById("time-slots-container");
       const badge = document.getElementById("service-duration-badge");
@@ -778,8 +893,8 @@
       container.innerHTML = "";
       if (badge) badge.textContent = `Duración: ${currentService.durationMin} min`;
 
-      const workStart = 480; // 8:00 AM
-      const workEnd = 1080;  // 6:00 PM
+      const workStart = 480; 
+      const workEnd = 1080;  
       const step = 30;
 
       const existingOnDay = appointmentsDatabase.filter(a => a.raw_date_str === selectedDate && (a.status === 'pendiente' || a.status === 'confirmada' || a.status === 'rechazada' || a.status === 'bloqueado'));
@@ -935,11 +1050,17 @@
       if (totalBsDisplay) totalBsDisplay.textContent = `${totalBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Bs`;
     }
 
-    // 3. ENVIAR RESERVA A SUPABASE
     async function confirmAppointment() {
       if (!selectedTime) {
         showMiniNotification('Por favor selecciona un horario disponible.');
         return;
+      }
+
+      const btn = document.getElementById("btn-confirmar-cita");
+      const btnText = document.getElementById("btn-confirmar-text");
+      if (btn && btnText) {
+        btn.disabled = true;
+        btnText.innerHTML = `Procesando reserva... ⏳`;
       }
 
       const nombre = document.getElementById("inp-nombre") ? document.getElementById("inp-nombre").value : "Cliente";
@@ -966,6 +1087,11 @@
 
       const { error } = await _supabase.from('citas').insert([newAppointment]);
 
+      if (btn && btnText) {
+        btn.disabled = false;
+        btnText.innerHTML = `Confirmar Cita 💅`;
+      }
+
       if (!error) {
         showMiniNotification('¡Cita solicitada con éxito a la nube!');
         setTimeout(() => switchTab('inicio'), 1200);
@@ -974,22 +1100,48 @@
       }
     }
 
-    // 4. RENDERIZAR PANEL ADMIN Y GESTIÓN DE ESTADOS
+    function updateAdminKPIs() {
+      const pendingCount = appointmentsDatabase.filter(a => a.status === 'pendiente').length;
+      const totalIngresos = appointmentsDatabase
+        .filter(a => a.status === 'confirmada' || a.status === 'completada')
+        .reduce((sum, a) => sum + (parseFloat(a.total_usd) || 0), 0);
+
+      const elPend = document.getElementById("kpi-pendientes");
+      const elIng = document.getElementById("kpi-ingresos");
+      const elBcv = document.getElementById("kpi-bcv");
+
+      if (elPend) elPend.textContent = pendingCount;
+      if (elIng) elIng.textContent = `$${totalIngresos.toFixed(2)}`;
+      if (elBcv) elBcv.textContent = `${TASA_BCV.toFixed(2)} Bs`;
+    }
+
+    function setAppointmentsFilter(status, btn) {
+      currentFilterStatus = status;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        b.className = "filter-btn px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-slate-600 border border-pink-200 shrink-0 cursor-pointer";
+      });
+      btn.className = "filter-btn px-3 py-1 rounded-full text-xs font-bold bg-[#b3006b] text-white shrink-0 cursor-pointer";
+      renderAppointmentsList();
+    }
+
     function renderAppointmentsList() {
       const container = document.getElementById('appointments-list-container');
-      const counterBadge = document.getElementById('counter-badge-text');
       if (!container) return;
 
+      updateAdminKPIs();
       container.innerHTML = '';
-      const pendingCount = appointmentsDatabase.filter(a => a.status === 'pendiente').length;
-      if (counterBadge) counterBadge.textContent = `${pendingCount} Pendiente(s)`;
 
-      if (appointmentsDatabase.length === 0) {
-        container.innerHTML = `<div class="p-6 text-center text-slate-500 font-sans-alt bg-white rounded-2xl border border-pink-100">No hay citas registradas en la nube.</div>`;
+      let filteredList = appointmentsDatabase;
+      if (currentFilterStatus !== 'todas') {
+        filteredList = appointmentsDatabase.filter(a => a.status === currentFilterStatus);
+      }
+
+      if (filteredList.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-slate-500 font-sans-alt bg-white rounded-2xl border border-pink-100">No hay registros con este filtro.</div>`;
         return;
       }
 
-      appointmentsDatabase.forEach(apt => {
+      filteredList.forEach(apt => {
         const bsTotal = (apt.total_usd * TASA_BCV).toFixed(2);
         let badgeColor = "bg-amber-100 text-amber-800";
         if (apt.status === 'confirmada') badgeColor = "bg-emerald-100 text-emerald-800";
@@ -1041,7 +1193,6 @@
       });
     }
 
-    // 5. ACTUALIZAR ESTADO EN SUPABASE Y NOTIFICAR POR WHATSAPP
     async function updateAppointmentStatus(id, newStatus, phone, cliente, date, service) {
       const { error } = await _supabase
         .from('citas')
@@ -1086,11 +1237,11 @@
         const tag = document.getElementById("global-bcv-tag");
         if (tag) tag.textContent = `${TASA_BCV.toFixed(2)} Bs`;
         updateSummary();
+        updateAdminKPIs();
         showMiniNotification(`Tasa BCV actualizada a ${TASA_BCV.toFixed(2)} Bs.`);
       }
     }
 
-    // 6. BLOQUEO MANUAL DE HORARIO
     async function promptBlockSchedule() {
       const horaInicio = prompt("Ingresa la hora de inicio a bloquear (Ej: 02:30 PM):", "02:30 PM");
       if (!horaInicio) return;
