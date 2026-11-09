@@ -167,6 +167,38 @@
     </div>
   </div>
 
+  <!-- ================= MODAL DE ZOOM PARA DISEÑO DE CITA ================= -->
+  <div id="design-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+    <div class="relative w-full max-w-lg bg-slate-900 rounded-3xl overflow-hidden border border-pink-500/30 shadow-2xl flex flex-col max-h-[90vh]">
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between px-4 py-3 bg-slate-950 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-[#b3006b]">image</span> Diseño de Referencia
+        </h3>
+        <button onclick="closeDesignModal()" class="w-8 h-8 rounded-full bg-rose-600/80 hover:bg-rose-600 text-white flex items-center justify-center transition-colors cursor-pointer" title="Cerrar">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- Contenedor con Zoom y Scroll -->
+      <div class="relative flex-1 overflow-auto p-4 flex items-center justify-center bg-black/50 select-none min-h-[300px]" id="modal-media-scroll-box">
+        <img id="modal-img-preview" src="" alt="Diseño Ampliado" class="max-w-full max-h-[70vh] object-contain transition-transform duration-200 cursor-zoom-in origin-center" onclick="toggleImageZoom(this)"/>
+        <video id="modal-video-preview" controls class="hidden max-w-full max-h-[70vh] object-contain"></video>
+      </div>
+
+      <!-- Footer Controles de Zoom -->
+      <div class="flex items-center justify-between px-4 py-3 bg-slate-950 border-t border-slate-800 text-xs text-slate-400">
+        <span>Haz clic en la imagen o usa los botones para hacer zoom</span>
+        <div class="flex items-center gap-2">
+          <button onclick="adjustZoom(-0.25)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold cursor-pointer">- Zoom</button>
+          <button onclick="resetZoom()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold cursor-pointer">100%</button>
+          <button onclick="adjustZoom(0.25)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold cursor-pointer">+ Zoom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ===================================================================== -->
+
   <!-- Contenedor App Móvil -->
   <div class="w-full max-w-md mx-auto min-h-screen relative pb-24 flex flex-col">
 
@@ -256,7 +288,7 @@
         </div>
       </section>
 
-      <!-- 3. Portafolio Exclusivo (Los 5 Servicios Reales con lazy loading) -->
+      <!-- 3. Portafolio Exclusivo (Rutas corregidas en minúsculas) -->
       <section class="space-y-3 pt-1">
         <div>
           <span class="text-[10px] font-bold text-[#b3006b] tracking-wider uppercase flex items-center gap-1">
@@ -278,10 +310,10 @@
             </div>
           </div>
 
-          <!-- 2. Semipermanente -->
+          <!-- 2. Semipermanente (Corregido: semipermanente.jpg) -->
           <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
             <div class="relative h-36 bg-slate-100 overflow-hidden">
-              <img src="semipermanente.jpeg" alt="Semipermanente" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <img src="semipermanente.jpg" alt="Semipermanente" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
               <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Semipermanente</span>
             </div>
             <div class="px-2.5 space-y-0.5">
@@ -302,10 +334,10 @@
             </div>
           </div>
 
-          <!-- 4. Nivelación -->
+          <!-- 4. Nivelación (Corregido: nivelacion.jpg) -->
           <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
             <div class="relative h-36 bg-slate-100 overflow-hidden">
-              <img src="nivelacion.jpeg" alt="Nivelación" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <img src="nivelacion.jpg" alt="Nivelación" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
               <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Nivelación</span>
             </div>
             <div class="px-2.5 space-y-0.5">
@@ -541,6 +573,35 @@
           </div>
         </section>
 
+        <!-- ================= ADJUNTAR FOTO O VIDEO DEL DISEÑO ================= -->
+        <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 border border-pink-100 shadow-xs space-y-3 font-sans-alt">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-900">Foto o Video del Diseño (Opcional)</h3>
+            <span class="text-[10px] bg-pink-50 text-[#b3006b] px-2 py-0.5 rounded-full font-bold">Referencia</span>
+          </div>
+          <p class="text-xs text-slate-500">¿Tienes una foto o video del diseño que deseas? Adjúntalo aquí para prepararlo con anticipación.</p>
+
+          <div class="space-y-2 pt-1">
+            <div class="flex items-center gap-2">
+              <label class="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-dashed border-pink-300 bg-pink-50/50 hover:bg-pink-50 text-[#b3006b] text-xs font-bold cursor-pointer transition-colors active:scale-[0.99]">
+                <span class="material-symbols-outlined text-[20px]">cloud_upload</span>
+                <span id="file-label-text">Subir Foto o Video...</span>
+                <input type="file" id="inp-diseno-file" accept="image/*,video/*" class="hidden" onchange="handleDesignFileSelect(this)">
+              </label>
+              <button type="button" id="btn-remove-file" class="hidden p-3 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs font-bold transition-colors" onclick="removeDesignFile()" title="Quitar archivo">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
+            </div>
+
+            <!-- Previsualización Dinámica -->
+            <div id="file-preview-container" class="hidden mt-3 relative w-full h-40 rounded-xl overflow-hidden border border-pink-200 bg-slate-900 flex items-center justify-center">
+              <img id="img-preview" src="" alt="Diseño cliente" class="hidden w-full h-full object-cover">
+              <video id="video-preview" controls class="hidden w-full h-full object-contain"></video>
+            </div>
+          </div>
+        </section>
+        <!-- ========================================================================= -->
+
         <!-- Botón de Confirmación con Estado de Carga -->
         <button id="btn-confirmar-cita" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#b3006b] via-pink-600 to-[#db1b86] text-white font-bold text-sm shadow-md active:scale-[0.96] transition-all flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" onclick="confirmAppointment()" type="button">
           <span id="btn-confirmar-text">Confirmar Cita 💅</span>
@@ -647,7 +708,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON TODAS LAS MEJORAS UX IMPLEMENTADAS -->
+  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -671,6 +732,12 @@
     let selectedPayment = "Dólares (Efectivo)";
     let currentFilterStatus = "todas";
 
+    let uploadedDesignDataUrl = null;
+    let uploadedFileType = null; // 'image' o 'video'
+
+    // Estado del Zoom en el Modal
+    let currentScale = 1.0;
+
     const monthYears = [
       { month: 9, year: 2026, name: "Octubre 2026" },
       { month: 10, year: 2026, name: "Noviembre 2026" },
@@ -683,7 +750,6 @@
 
     let appointmentsDatabase = [];
 
-    // MODO OSCURO: Inicializar preferencia guardada
     document.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("carolinas_dark_mode") === "true") {
         document.body.classList.add("dark-mode");
@@ -707,13 +773,146 @@
       showMiniNotification(isDark ? "Modo Oscuro activado 🌙" : "Modo Claro activado ☀️");
     }
 
-    // FORMATO AUTOMÁTICO DE TELÉFONO (Ej: 0412-1234567)
     function formatPhoneNumber(input) {
       let value = input.value.replace(/\D/g, '');
       if (value.length > 4) {
         value = value.slice(0, 4) + '-' + value.slice(4, 11);
       }
       input.value = value;
+    }
+
+    // Funciones del Modal con Zoom
+    function openDesignModal(fileUrl, fileType) {
+      const modal = document.getElementById('design-modal');
+      const imgPreview = document.getElementById('modal-img-preview');
+      const videoPreview = document.getElementById('modal-video-preview');
+      
+      currentScale = 1.0;
+      if(imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+
+      if (fileType === 'image') {
+        imgPreview.src = fileUrl;
+        imgPreview.classList.remove('hidden');
+        videoPreview.classList.add('hidden');
+        videoPreview.src = "";
+      } else if (fileType === 'video') {
+        videoPreview.src = fileUrl;
+        videoPreview.classList.remove('hidden');
+        imgPreview.classList.add('hidden');
+        imgPreview.src = "";
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeDesignModal() {
+      const modal = document.getElementById('design-modal');
+      const videoPreview = document.getElementById('modal-video-preview');
+      videoPreview.pause();
+      modal.classList.add('hidden');
+    }
+
+    function toggleImageZoom(imgElement) {
+      currentScale = currentScale === 1.0 ? 1.8 : (currentScale === 1.8 ? 2.6 : 1.0);
+      imgElement.style.transform = `scale(${currentScale})`;
+    }
+
+    function adjustZoom(delta) {
+      currentScale = Math.max(1.0, Math.min(3.5, currentScale + delta));
+      const imgPreview = document.getElementById('modal-img-preview');
+      if (imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+    }
+
+    function resetZoom() {
+      currentScale = 1.0;
+      const imgPreview = document.getElementById('modal-img-preview');
+      if (imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+    }
+
+    function handleDesignFileSelect(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 10 * 1024 * 1024) {
+          showMiniNotification("El archivo es muy pesado. Elige uno menor a 10MB.");
+          input.value = "";
+          return;
+        }
+
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              const maxDim = 800;
+              if (width > maxDim || height > maxDim) {
+                if (width > height) {
+                  height = Math.round((height * maxDim) / width);
+                  width = maxDim;
+                } else {
+                  width = Math.round((width * maxDim) / height);
+                  height = maxDim;
+                }
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+
+              uploadedDesignDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+              uploadedFileType = 'image';
+
+              const previewContainer = document.getElementById('file-preview-container');
+              const imgPreview = document.getElementById('img-preview');
+              const videoPreview = document.getElementById('video-preview');
+              const labelText = document.getElementById('file-label-text');
+              const btnRemove = document.getElementById('btn-remove-file');
+
+              previewContainer.classList.remove('hidden');
+              btnRemove.classList.remove('hidden');
+              imgPreview.src = uploadedDesignDataUrl;
+              imgPreview.classList.remove('hidden');
+              videoPreview.classList.add('hidden');
+              labelText.textContent = "Foto seleccionada ✓";
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            uploadedDesignDataUrl = e.target.result;
+            uploadedFileType = 'video';
+
+            const previewContainer = document.getElementById('file-preview-container');
+            const imgPreview = document.getElementById('img-preview');
+            const videoPreview = document.getElementById('video-preview');
+            const labelText = document.getElementById('file-label-text');
+            const btnRemove = document.getElementById('btn-remove-file');
+
+            previewContainer.classList.remove('hidden');
+            btnRemove.classList.remove('hidden');
+            videoPreview.src = uploadedDesignDataUrl;
+            videoPreview.classList.remove('hidden');
+            imgPreview.classList.add('hidden');
+            labelText.textContent = "Video seleccionado ✓";
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+
+    function removeDesignFile() {
+      uploadedDesignDataUrl = null;
+      uploadedFileType = null;
+      document.getElementById('inp-diseno-file').value = "";
+      document.getElementById('file-preview-container').classList.add('hidden');
+      document.getElementById('btn-remove-file').classList.add('hidden');
+      document.getElementById('img-preview').src = "";
+      document.getElementById('video-preview').src = "";
+      document.getElementById('file-label-text').textContent = "Subir Foto o Video...";
     }
 
     async function obtenerTasaBCV() {
@@ -1082,7 +1281,9 @@
         duration_min: currentService.durationMin,
         payment: selectedPayment,
         total_usd: totalUsd,
-        status: 'pendiente'
+        status: 'pendiente',
+        design_file: uploadedDesignDataUrl || null,
+        design_type: uploadedFileType || null
       };
 
       const { error } = await _supabase.from('citas').insert([newAppointment]);
@@ -1096,7 +1297,8 @@
         showMiniNotification('¡Cita solicitada con éxito a la nube!');
         setTimeout(() => switchTab('inicio'), 1200);
       } else {
-        showMiniNotification('Error al registrar la cita en Supabase.');
+        console.error("Error al guardar en Supabase:", error);
+        showMiniNotification(`Error: ${error.message || 'No se pudo registrar la cita en Supabase.'}`);
       }
     }
 
@@ -1149,6 +1351,19 @@
         if (apt.status === 'completada') badgeColor = "bg-indigo-100 text-indigo-800";
         if (apt.status === 'bloqueado') badgeColor = "bg-slate-200 text-slate-800";
 
+        let designButtonHtml = "";
+        if (apt.design_file) {
+          const fileTypeStr = apt.design_type || 'image';
+          designButtonHtml = `
+            <div class="mt-2 pt-1">
+              <button onclick="openDesignModal('${apt.design_file}', '${fileTypeStr}')" class="w-full py-2.5 px-3 rounded-xl bg-pink-50 border border-pink-200 text-[#b3006b] hover:bg-pink-100 font-bold text-xs flex items-center justify-center gap-2 transition-colors active:scale-95 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[18px]">visibility</span>
+                <span>Ver Diseño de Cita 💅</span>
+              </button>
+            </div>
+          `;
+        }
+
         const cardHtml = `
           <div class="rounded-2xl bg-white border border-pink-100 p-4 shadow-xs flex flex-col gap-3 font-sans-alt">
             <div class="flex items-center justify-between">
@@ -1160,6 +1375,7 @@
               <p class="text-xs text-[#b3006b] font-bold mt-0.5">📍 ${apt.modality || 'Estudio Caucagua Viamar'}</p>
               <p class="text-xs text-slate-700 font-bold mt-0.5">📅 ${apt.date}</p>
               <p class="text-xs text-slate-500 mt-0.5">👤 ${apt.cliente} - ${apt.phone}</p>
+              ${designButtonHtml}
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-pink-50/50 border border-pink-100">
               <div>
@@ -1270,7 +1486,9 @@
         duration_min: duration,
         payment: 'N/A',
         total_usd: 0.00,
-        status: 'bloqueado'
+        status: 'bloqueado',
+        design_file: null,
+        design_type: null
       };
 
       const { error } = await _supabase.from('citas').insert([blockRecord]);
