@@ -429,7 +429,7 @@
                 <div class="w-10 h-10 rounded-xl bg-[#b3006b] text-white flex items-center justify-center shrink-0">💎</div>
                 <div>
                   <span class="font-bold text-sm text-slate-900 block">Nivelación</span>
-                  <p class="text-xs text-slate-600 font-sans-alt">Refuerzo natural • ⏱ 90 min</p>
+                  <p class="text-xs text-slate-600 font-sans-alt">Refuerzo natural • ⏱ 120 min</p>
                 </div>
               </div>
               <div class="text-right">
@@ -708,7 +708,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM ROBUSTA -->
+  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM CORREGIDA -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -782,7 +782,7 @@
     }
 
     // ==========================================
-    // FUNCIONES DEL MODAL CON ZOOM (ROBUSTAS)
+    // FUNCIONES DEL MODAL CON ZOOM (AJUSTADAS)
     // ==========================================
     function openDesignModal(fileUrl, fileType) {
       const modal = document.getElementById('design-modal');
@@ -825,9 +825,10 @@
     }
 
     function toggleImageZoom(imgElement) {
-      if (!imgElement) return;
+      const target = imgElement || document.getElementById('modal-img-preview');
+      if (!target) return;
       currentScale = currentScale === 1.0 ? 1.8 : (currentScale === 1.8 ? 2.6 : 1.0);
-      imgElement.style.transform = `scale(${currentScale})`;
+      target.style.transform = `scale(${currentScale})`;
     }
 
     function adjustZoom(delta) {
