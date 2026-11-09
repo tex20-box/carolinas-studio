@@ -288,7 +288,7 @@
         </div>
       </section>
 
-      <!-- 3. Portafolio Exclusivo (Rutas corregidas en minúsculas) -->
+      <!-- 3. Portafolio Exclusivo -->
       <section class="space-y-3 pt-1">
         <div>
           <span class="text-[10px] font-bold text-[#b3006b] tracking-wider uppercase flex items-center gap-1">
@@ -310,10 +310,10 @@
             </div>
           </div>
 
-          <!-- 2. Semipermanente (Corregido: semipermanente.jpg) -->
+          <!-- 2. Semipermanente -->
           <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
             <div class="relative h-36 bg-slate-100 overflow-hidden">
-              <img src="semipermanente.jpg" alt="Semipermanente" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+              <img src="Semipermanente.jpg" alt="Semipermanente" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
               <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#b3006b] text-[10px] font-bold shadow-xs">Semipermanente</span>
             </div>
             <div class="px-2.5 space-y-0.5">
@@ -334,7 +334,7 @@
             </div>
           </div>
 
-          <!-- 4. Nivelación (Corregido: nivelacion.jpg) -->
+          <!-- 4. Nivelación -->
           <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-xs space-y-2 pb-2.5 transition-transform hover:-translate-y-1 duration-200">
             <div class="relative h-36 bg-slate-100 overflow-hidden">
               <img src="nivelacion.jpg" alt="Nivelación" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
@@ -428,7 +428,7 @@
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-[#b3006b] text-white flex items-center justify-center shrink-0">💎</div>
                 <div>
-                  <span class="font-bold text-sm text-slate-900 block">Nivelación (Base Rubber)</span>
+                  <span class="font-bold text-sm text-slate-900 block">Nivelación</span>
                   <p class="text-xs text-slate-600 font-sans-alt">Refuerzo natural • ⏱ 90 min</p>
                 </div>
               </div>
@@ -708,7 +708,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM -->
+  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM ROBUSTA -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -781,21 +781,29 @@
       input.value = value;
     }
 
-    // Funciones del Modal con Zoom
+    // ==========================================
+    // FUNCIONES DEL MODAL CON ZOOM (ROBUSTAS)
+    // ==========================================
     function openDesignModal(fileUrl, fileType) {
       const modal = document.getElementById('design-modal');
       const imgPreview = document.getElementById('modal-img-preview');
       const videoPreview = document.getElementById('modal-video-preview');
       
-      currentScale = 1.0;
-      if(imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+      if (!modal || !imgPreview || !videoPreview) {
+        console.warn("Elementos del modal no encontrados en el DOM.");
+        return;
+      }
 
-      if (fileType === 'image') {
+      currentScale = 1.0;
+      imgPreview.style.transform = `scale(${currentScale})`;
+
+      if (fileType === 'image' || (!fileType && !fileUrl.endsWith('.mp4'))) {
         imgPreview.src = fileUrl;
         imgPreview.classList.remove('hidden');
         videoPreview.classList.add('hidden');
+        videoPreview.pause();
         videoPreview.src = "";
-      } else if (fileType === 'video') {
+      } else {
         videoPreview.src = fileUrl;
         videoPreview.classList.remove('hidden');
         imgPreview.classList.add('hidden');
@@ -803,16 +811,21 @@
       }
 
       modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
     function closeDesignModal() {
       const modal = document.getElementById('design-modal');
       const videoPreview = document.getElementById('modal-video-preview');
-      videoPreview.pause();
-      modal.classList.add('hidden');
+      if (videoPreview) videoPreview.pause();
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
     }
 
     function toggleImageZoom(imgElement) {
+      if (!imgElement) return;
       currentScale = currentScale === 1.0 ? 1.8 : (currentScale === 1.8 ? 2.6 : 1.0);
       imgElement.style.transform = `scale(${currentScale})`;
     }
@@ -820,14 +833,19 @@
     function adjustZoom(delta) {
       currentScale = Math.max(1.0, Math.min(3.5, currentScale + delta));
       const imgPreview = document.getElementById('modal-img-preview');
-      if (imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+      if (imgPreview) {
+        imgPreview.style.transform = `scale(${currentScale})`;
+      }
     }
 
     function resetZoom() {
       currentScale = 1.0;
       const imgPreview = document.getElementById('modal-img-preview');
-      if (imgPreview) imgPreview.style.transform = `scale(${currentScale})`;
+      if (imgPreview) {
+        imgPreview.style.transform = `scale(${currentScale})`;
+      }
     }
+    // ==========================================
 
     function handleDesignFileSelect(input) {
       if (input.files && input.files[0]) {
