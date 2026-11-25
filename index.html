@@ -199,6 +199,30 @@
   </div>
   <!-- ===================================================================== -->
 
+  <!-- ================= MODAL PARA BLOQUEAR DÍA COMPLETO ==================== -->
+  <div id="block-day-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 font-sans-alt">
+    <div class="w-full max-w-sm bg-white rounded-3xl p-5 border border-pink-100 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[20px] text-[#b3006b]">event_busy</span> Bloquear Día Completo
+        </h3>
+        <button onclick="closeBlockDayModal()" type="button" class="text-slate-400 hover:text-slate-700 p-1 cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <p class="text-xs text-slate-500">Selecciona la fecha exacta en la que no atenderás. Ese día quedará deshabilitado en el calendario.</p>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-600 mb-1" for="inp-block-day-date">Fecha a bloquear *</label>
+        <input type="date" id="inp-block-day-date" class="w-full bg-slate-50 border border-pink-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 font-bold focus:outline-none focus:border-[#b3006b]">
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button type="button" onclick="closeBlockDayModal()" class="py-2.5 px-3 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 cursor-pointer">Cancelar</button>
+        <button type="button" onclick="confirmBlockFullDay()" class="py-2.5 px-3 rounded-xl bg-[#b3006b] text-white text-xs font-bold hover:bg-[#99005a] shadow-sm cursor-pointer">Bloquear Día</button>
+      </div>
+    </div>
+  </div>
+  <!-- ===================================================================== -->
+
   <!-- Contenedor App Móvil -->
   <div class="w-full max-w-md mx-auto min-h-screen relative pb-24 flex flex-col">
 
@@ -674,12 +698,15 @@
             <button onclick="setAppointmentsFilter('completada', this)" class="filter-btn px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-slate-600 border border-pink-200 shrink-0 cursor-pointer">Completadas</button>
           </div>
 
-          <div class="pt-2 border-t border-pink-100 grid grid-cols-2 gap-2">
-            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptBlockSchedule()" type="button">
+          <div class="pt-2 border-t border-pink-100 grid grid-cols-3 gap-2">
+            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="openBlockDayModal()" type="button">
+              Bloquear Día
+            </button>
+            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptBlockSchedule()" type="button">
               Bloquear Horario
             </button>
-            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2.5 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptEditBcv()" type="button">
-              Ajustar Tasa BCV
+            <button class="w-full bg-pink-50 border border-pink-200 text-[#b3006b] text-[11px] font-bold py-2 px-2 rounded-xl active:scale-95 transition-transform cursor-pointer hover:bg-pink-100/70" onclick="promptEditBcv()" type="button">
+              Ajustar BCV
             </button>
           </div>
         </div>
@@ -708,7 +735,7 @@
 
   </div>
 
-  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL Y ZOOM CORREGIDA -->
+  <!-- JAVASCRIPT CON FUNCIONALIDAD DE MODAL, ZOOM Y BLOQUEO DE DÍAS -->
   <script>
     // ==========================================
     // CONFIGURACIÓN DE SUPABASE
@@ -960,6 +987,7 @@
 
       if (!error && data) {
         appointmentsDatabase = data;
+        renderCalendar();
         calculateAvailableTimeSlots();
         if (isAdminAuthenticated) {
           renderAppointmentsList();
@@ -1103,6 +1131,12 @@
       updateSummary();
     }
 
+    function isDayBlocked(dateStr) {
+      return appointmentsDatabase.some(
+        a => a.raw_date_str === dateStr && a.status === 'bloqueado' && (a.duration_min >= 600 || a.service === 'Día Bloqueado')
+      );
+    }
+
     function calculateAvailableTimeSlots() {
       const container = document.getElementById("time-slots-container");
       const badge = document.getElementById("service-duration-badge");
@@ -1110,6 +1144,12 @@
 
       container.innerHTML = "";
       if (badge) badge.textContent = `Duración: ${currentService.durationMin} min`;
+
+      if (isDayBlocked(selectedDate)) {
+        container.innerHTML = `<p class="col-span-3 text-xs text-rose-600 font-bold py-2.5 px-2 text-center bg-rose-50 rounded-xl border border-rose-200">Este día está bloqueado por el estudio.</p>`;
+        selectedTime = "";
+        return;
+      }
 
       const workStart = 480; 
       const workEnd = 1080;  
@@ -1208,10 +1248,17 @@
       }
 
       for (let day = 1; day <= totalDays; day++) {
+        const dayDateStr = `${day} de ${info.name.substring(0, 3)}, ${info.year}`;
+        const blocked = isDayBlocked(dayDateStr);
         const isSelected = (day === selectedDayNum);
-        const btnClass = isSelected 
-          ? "cal-day-btn p-1.5 rounded-lg bg-[#b3006b] text-white font-bold cursor-pointer"
-          : "cal-day-btn p-1.5 rounded-lg hover:bg-pink-100 text-slate-700 font-semibold cursor-pointer";
+
+        let btnClass = "cal-day-btn p-1.5 rounded-lg hover:bg-pink-100 text-slate-700 font-semibold cursor-pointer";
+        if (blocked) {
+          btnClass = "cal-day-btn p-1.5 rounded-lg bg-rose-100 text-rose-700 font-bold line-through cursor-pointer";
+        }
+        if (isSelected) {
+          btnClass = "cal-day-btn p-1.5 rounded-lg bg-[#b3006b] text-white font-bold cursor-pointer";
+        }
         grid.innerHTML += `<button class="${btnClass}" onclick="clickCalendarDay(${day})" type="button">${day}</button>`;
       }
     }
@@ -1383,6 +1430,8 @@
           `;
         }
 
+        const durationLabel = apt.service === 'Día Bloqueado' ? 'Día completo' : `${apt.duration_min || 60} min`;
+
         const cardHtml = `
           <div class="rounded-2xl bg-white border border-pink-100 p-4 shadow-xs flex flex-col gap-3 font-sans-alt">
             <div class="flex items-center justify-between">
@@ -1390,7 +1439,7 @@
               <span class="text-xs text-slate-500 font-bold">💳 ${apt.payment || 'N/A'}</span>
             </div>
             <div>
-              <h2 class="font-bold text-base text-slate-900">${apt.service} (${apt.duration_min || 60} min)</h2>
+              <h2 class="font-bold text-base text-slate-900">${apt.service} (${durationLabel})</h2>
               <p class="text-xs text-[#b3006b] font-bold mt-0.5">📍 ${apt.modality || 'Estudio Caucagua Viamar'}</p>
               <p class="text-xs text-slate-700 font-bold mt-0.5">📅 ${apt.date}</p>
               <p class="text-xs text-slate-500 mt-0.5">👤 ${apt.cliente} - ${apt.phone}</p>
@@ -1477,6 +1526,83 @@
       }
     }
 
+    // ==========================================
+    // BLOQUEO DE DÍA COMPLETO (BOTÓN DIRECTO)
+    // ==========================================
+    function openBlockDayModal() {
+      const modal = document.getElementById('block-day-modal');
+      const input = document.getElementById('inp-block-day-date');
+      if (input) {
+        const info = monthYears[currentMonthIndex];
+        const mm = String(info.month + 1).padStart(2, '0');
+        const dd = String(selectedDayNum).padStart(2, '0');
+        input.value = `${info.year}-${mm}-${dd}`;
+      }
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeBlockDayModal() {
+      const modal = document.getElementById('block-day-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function formatIsoDateToAppDate(isoDate) {
+      const [yearStr, monthStr, dayStr] = isoDate.split('-');
+      const monthNamesShort = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+      const dayNum = parseInt(dayStr, 10);
+      const monthIdx = parseInt(monthStr, 10) - 1;
+      return `${dayNum} de ${monthNamesShort[monthIdx]}, ${yearStr}`;
+    }
+
+    async function confirmBlockFullDay() {
+      const input = document.getElementById('inp-block-day-date');
+      if (!input || !input.value) {
+        showMiniNotification("Por favor selecciona una fecha.");
+        return;
+      }
+
+      const targetDateStr = formatIsoDateToAppDate(input.value);
+
+      if (isDayBlocked(targetDateStr)) {
+        showMiniNotification(`El día ${targetDateStr} ya se encuentra bloqueado.`);
+        closeBlockDayModal();
+        return;
+      }
+
+      const blockRecord = {
+        id: 'block-day-' + Date.now(),
+        cliente: 'Bloqueo Manual Dueña',
+        phone: 'N/A',
+        service: 'Día Bloqueado',
+        modality: 'Estudio Caucagua Viamar',
+        date: `${targetDateStr}, Día Completo`,
+        raw_date_str: targetDateStr,
+        start_time_min: 0,
+        duration_min: 1440,
+        payment: 'N/A',
+        total_usd: 0.00,
+        status: 'bloqueado',
+        design_file: null,
+        design_type: null
+      };
+
+      const { error } = await _supabase.from('citas').insert([blockRecord]);
+
+      if (!error) {
+        closeBlockDayModal();
+        showMiniNotification(`Día bloqueado exitosamente: ${targetDateStr}`);
+        await fetchAppointmentsFromSupabase();
+      } else {
+        showMiniNotification('Error al guardar el bloqueo del día en Supabase.');
+      }
+    }
+
     async function promptBlockSchedule() {
       const horaInicio = prompt("Ingresa la hora de inicio a bloquear (Ej: 02:30 PM):", "02:30 PM");
       if (!horaInicio) return;
@@ -1514,7 +1640,7 @@
 
       if (!error) {
         showMiniNotification(`Horario bloqueado exitosamente: ${horaInicio} a ${horaFin}`);
-        fetchAppointmentsFromSupabase();
+        await fetchAppointmentsFromSupabase();
       } else {
         showMiniNotification('Error al guardar el bloqueo en Supabase.');
       }
